@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { StyleSheet, View, Pressable, Text, Animated } from "react-native";
 import { useRouter } from "expo-router";
-import { SimpleFilter } from 'react-native-image-filter-kit';
 
 export default function SplashScreen({ navigation }) {
   const router = useRouter();
