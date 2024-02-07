@@ -1,0 +1,43 @@
+{
+  "expo": {
+    "name": "manasvi-ecommerce",
+    "slug": "manasvi-ecommerce",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/manasvi.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/manasvi.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#000000"
+      },
+      "package": "manasvi.dmart"
+    },
+    "scheme": "employee-yt",
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-router"
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "3565fd10-aa21-47b1-9a47-7ee013c44fa5"
+      }
+    }
+  }
+}
