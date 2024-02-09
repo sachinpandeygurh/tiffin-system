@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, ImageBackground, SafeAreaView, Text, View, StyleSheet } from 'react-native';
+import { ImageBackground, SafeAreaView, View, StyleSheet } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 
 const styles = StyleSheet.create({
@@ -31,17 +31,17 @@ export class Carusel extends Component {
         {
           title: 'Item 1',
           text: 'Text 1',
-          img: 'https://dmart.onrender.com/images/d1.jpg',
+          img: 'https://dptf.onrender.com/static/media/homebg2.7993a07534d7c4eeaebb.jpg',
         },
         {
           title: 'Item 2',
           text: 'Text 2',
-          img: 'https://dmart.onrender.com/images/d2.jpg',
+          img: 'https://dptf.onrender.com/static/media/homebgimage.64834583a4ec108b96a2.jpg',
         },
         {
           title: 'Item 3',
           text: 'Text 3',
-          img: 'https://dmart.onrender.com/images/d3.jpg',
+          img: 'https://images.twarak.com/images/202309/ad-1693810374-61.jpeg',
         },
       ],
     };
@@ -67,6 +67,9 @@ export class Carusel extends Component {
             itemWidth={300}
             renderItem={this._renderItem}
             onSnapToItem={(index) => this.setState({ activeIndex: index })}
+            autoplay={true}
+            autoplayInterval={2000}
+            loop={true}
           />
         </View>
       </SafeAreaView>

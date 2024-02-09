@@ -4,42 +4,32 @@ import { useRouter } from "expo-router";
 
 export default function SplashScreen({ navigation }) {
   const router = useRouter();
+
   const fadeAnim = new Animated.Value(0);
 
   useEffect(() => {
     Animated.timing(fadeAnim, {
       toValue: 1,
-      duration: 2500,
+      duration: 1500,
       useNativeDriver: true,
     }).start(() => {
-      router.push('(home)');
+     
+      router.push('/(home)');
+
     });
   }, [fadeAnim, navigation]);
-
-  const handlePress = () => {
-    // Handle press logic here
-  };
 
   return (
     <View style={styles.container}>
       <View style={styles.logoContainer}>
-        <View style={styles.titleContainer}>
-          <Text style={styles.title}>Welcome to</Text>
-        </View>
-        <Pressable style={styles.logoPressable} onPress={handlePress}>
-          <Animated.View style={{ ...styles.logo, opacity: fadeAnim }}>
-            <SimpleFilter
-              onFilter={(source) => source.map((pixel) => [pixel[0], pixel[1], pixel[2], 1])}
-            >
-              <Animated.Image
-                style={styles.logoImage}
-                source={require('../../img/c_logo.png')}
-              />
-            </SimpleFilter>
-          </Animated.View>
+        <Pressable style={styles.logoPressable}>
+          <Animated.Image
+            style={{ ...styles.logo, opacity: fadeAnim }}
+            source={require("../../img/c_logo.png")}
+          />
         </Pressable>
         <View style={styles.titleContainer}>
-          <Text style={styles.title}> MCS Tiffin Services</Text>
+          <Text style={styles.title}>Manasvi Dmart</Text>
         </View>
       </View>
     </View>
@@ -51,30 +41,25 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#000",
+    backgroundColor: "#000", // Set your background color
   },
   logoContainer: {
     alignItems: "center",
   },
   logoPressable: {
     borderRadius: 50,
-    overflow: 'hidden', // Use 'hidden' instead of ViewPropTypes.style
+    overflow: "hidden",
   },
   logo: {
-    width: 300,
-    height: 300,
-    backgroundColor: 'black', 
-  },
-  logoImage: {
-    width: '100%',
-    height: '100%',
+    width: 150,
+    height: 150,
   },
   titleContainer: {
-    marginVertical: 80,
+    marginTop: 20,
   },
   title: {
     fontSize: 24,
     fontWeight: "bold",
-    color: "#333f",
+    color: "#333", // Set your text color
   },
 });

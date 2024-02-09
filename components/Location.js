@@ -13,18 +13,16 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
-import { MaterialIcons, AntDesign } from "@expo/vector-icons";
+import { MaterialIcons, AntDesign, EvilIcons } from "@expo/vector-icons";
 import * as Location from "expo-location";
 
 const LocationComponent = ({ navigation }) => {
-  const [displayCurrentAddress, setDisplayCurrentAddress] =
-    useState( "We are loading your location");
+  const [displayCurrentAddress, setDisplayCurrentAddress] = useState(
+    "We are loading your location"
+  );
   const [locationServicesEnabled, setLocationServicesEnabled] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [userInput, setUserInput] = useState("");
-  const [maplocation, SetMaplocation] = useState(
-    "We are loading your location"
-  );
 
   useEffect(() => {
     checkIfLocationEnabled();
@@ -82,16 +80,14 @@ const LocationComponent = ({ navigation }) => {
       //   console.log(response);
       for (let item of response) {
         let address = `${item.name} ${item.city}  ${item.postalCode}`;
-        // console.log(address);
-        SetMaplocation(address);
+        setDisplayCurrentAddress(address);
+        console.log(address);
       }
     }
   };
 
-  const hangleLocation = (address) => {
+  const hangleLocation = () => {
     getCurrentLocation();
-    setDisplayCurrentAddress(address);
-    setIsVisible(false);
   };
 
   const handleLocationModal = () => {
@@ -103,31 +99,25 @@ const LocationComponent = ({ navigation }) => {
   };
 
   const locationModel = () => (
-    <ScrollView isVisible={isVisible} onBackdropPress={hideModal}>
+    <Modal isVisible={isVisible} onBackdropPress={hideModal}>
       <SafeAreaView>
         <KeyboardAvoidingView behavior="position">
           <ScrollView keyboardShouldPersistTaps="handled">
-            <View  style={{flexDirection:"row", alignItems:"center", justifyContent:"space-between"}}>
-            
-              <TextInput style={{width:100}}
+            <View>
+              <TouchableOpacity activeOpacity={0.8} onPress={hideModal}>
+                <AntDesign name="close" size={24} color="black" />
+              </TouchableOpacity>
+              <TextInput
                 placeholder="address"
                 value={userInput}
                 onChangeText={(text) => setUserInput(text)}
               />
-                <TouchableOpacity style={{marginHorizontal:30}} activeOpacity={0.8} onPress={hideModal}>
-                <AntDesign name="close" size={24} color="black" />
-              </TouchableOpacity>
-              <Button
-                title="Submit"
-                onPress={() => hangleLocation(userInput)}
-              />
+              <Button title="Submit" onPress={hangleLocation} />
             </View>
-            
           </ScrollView>
-          
         </KeyboardAvoidingView>
       </SafeAreaView>
-    </ScrollView>
+    </Modal>
   );
 
   return (
@@ -137,16 +127,17 @@ const LocationComponent = ({ navigation }) => {
         alignItems: "center",
         justifyContent: "center",
         padding: 10,
-        backgroundColor: "rgba(255, 255, 255, 0.8)",
+        backgroundColor: "white",
         width: "100%",
         borderRadius: 10,
       }}
     >
       <MaterialIcons name="location-on" size={30} color="#fd5c63" />
       <View>
-        <Text style={{ fontSize: 18, fontWeight: "600" }}>
-          Home <AntDesign name="caretdown" size={12} color="black" />
-        </Text>
+        <Pressable
+        onPress={handleLocationModal}>
+         <Text  style={{ fontSize: 18, fontWeight: "600" }}>Home  <AntDesign name="caretdown" size={12} color="black" /> </Text>
+        </Pressable>
         <Text>
           {locationServicesEnabled ? (
             displayCurrentAddress
@@ -158,10 +149,8 @@ const LocationComponent = ({ navigation }) => {
             </Pressable>
           )}
         </Text>
-      {isVisible && locationModel()}
       </View>
-      <Pressable
-        onPress={handleLocationModal}
+      <View
         style={{ marginLeft: "auto", marginRight: 7 }}
       >
         <Text
@@ -172,9 +161,10 @@ const LocationComponent = ({ navigation }) => {
             marginLeft: 20,
           }}
         >
-          Change
+          <EvilIcons name="user" size={54} color="black" />
         </Text>
-      </Pressable>
+      </View>
+      {isVisible && locationModel()}
     </View>
   );
 };

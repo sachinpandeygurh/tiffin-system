@@ -12,6 +12,7 @@ import {
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Ionicons } from '@expo/vector-icons';
 
 const Products = () => {
   const [products, setProducts] = useState([]);
@@ -119,76 +120,9 @@ const Products = () => {
     // Your logic for handling subcategory filter
   };
   
-  // const setCategories = (newCategories) => {
-  //   console.log(`setCategories called with newCategories:`, newCategories);
-  //   // Your logic for setting categories
-  // };
-  
-  // const setDiscount = (newDiscount) => {
-  //   console.log(`setDiscount called with newDiscount:`, newDiscount);
-  //   // Your logic for setting discount
-  // };
-  
-  // const setPrices = (newPrices) => {
-  //   console.log(`setPrices called with newPrices:`, newPrices);
-  //   // Your logic for setting prices
-  // };
-  
-  // const setSubCategories = (newSubCategories) => {
-  //   console.log(`setSubCategories called with newSubCategories:`, newSubCategories);
-  //   // Your logic for setting subcategories
-  // };
-
-  // Load more
-  const loadMore = async () => {
-    try {
-      setLoading(true);
-      const { data } = await axios.get(
-        `https://dmart.onrender.com/api/v1/product/product-list/${page}`
-      );
-      setLoading(false);
-      // setProducts([...products, ...data?.products]);
-      setPrices([...products, ...data?.products.price]);
-      setDiscount([...products, ...data?.products.discount]);
-    } catch (error) {
-      console.log(error);
-      setLoading(false);
-    }
-  };
 
   const navigation = useNavigation();
-  const handleProductDetails = (
-    productId,
-    productName,
-    productSlug,
-    productDescription,
-    productFeature,
-    productPrice,
-    productDiscount,
-    quantity,
-    pricedata,
-    categoryId
-  ) => {
-    // console.log("handleProductDetails", productId);
-    try {
-      navigation.navigate("aboutproduct", {
-        productId,
-        productName,
-        productSlug,
-        productDescription,
-        productFeature,
-        productPrice,
-        productDiscount,
-        quantity,
-        pricedata,
-        categoryId,
-      });
-    } catch (error) {
-      console.error("Error during navigation:", error);
-    }
-    // await
-  };
-
+  
   const handleAddCart = async (
     productId,
     productName,
@@ -234,7 +168,6 @@ const Products = () => {
       console.error("Error adding item to cart:", error);
     }
   };
-  console.log("products", products);
 
   const Checkbox = ({ label, checked, onChange }) => {
     return (
@@ -369,7 +302,9 @@ const Products = () => {
               flexDirection: "row",
               flexWrap: "wrap",
               justifyContent: "space-between",
-              paddingHorizontal: 15,
+              alignItems:"center",
+            marginHorizontal:"10%"
+          
             }}
           >
             <Text
@@ -378,15 +313,16 @@ const Products = () => {
                 fontSize: 20,
                 margin: 10,
                 fontWeight: "bold",
+                paddingLeft:'20%'
               }}
             >
-              All Products List
+             Available Tiffins
             </Text>
             <Pressable
               onPress={() => setFilterModalVisible(!isFilterModalVisible)}
-              style={{ textAlign: "center", fontSize: 20, margin: 10 }}
+              style={{ textAlign: "center", fontSize: 20, paddingTop: 60 }}
             >
-              <Text style={{color:!isFilterModalVisible?"green":"red"}}>{isFilterModalVisible? "Hide filter": "Show filter"}</Text>
+              <Text style={{color:!isFilterModalVisible?"green":"red"}}><Ionicons name="filter" size={24} color={!isFilterModalVisible?"green":"red"} /></Text>
             </Pressable>
           </View> 
           {isFilterModalVisible && filtermodel()}
@@ -400,20 +336,6 @@ const Products = () => {
             {products?.map((p) => (
               <TouchableOpacity
                 key={p._id}
-                onPress={() =>
-                  handleProductDetails({
-                    productId: p._id,
-                    productName: p.name,
-                    productSlug: p.slug,
-                    productDescription: p.description,
-                    productFeature: p.feature,
-                    productPrice: p.price,
-                    productDiscount: p.discount,
-                    quantity: p.quentity === 1,
-                    pricedata: p.pricedata,
-                    categoryId: p.category,
-                  })
-                }
                 style={styles.productContainer}
               >
                 <View style={styles.imageContainer}>

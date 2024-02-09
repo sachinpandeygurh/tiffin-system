@@ -17,14 +17,10 @@ export default function Header() {
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
-        <Pressable onPress={handleHomePress} style={styles.logoContainer}>
-          <Image style={styles.logo} source={require("../img/c_logo.png")} />
-        </Pressable>
+
         <Pressable onPress={handleSearchPress} style={styles.searchContainer}>
           <EvilIcons  name="search" size={24} color="black" />
           <Text style={styles.searchInput} >Search...</Text>
-          {/* <TextInput style={styles.searchInput} placeholder="Search..." /> */}
-          <Feather name="mic" size={24} color="black" />
         </Pressable>
       </View>
     </View>
@@ -34,7 +30,7 @@ export default function Header() {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "white",
+    backgroundColor: "#f2f2f2",
     flex: 1,
     position: "absolute",
     top: 0,
@@ -46,7 +42,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 25,
-    backgroundColor: "white",
+    backgroundColor: "#f2f2f2",
     padding: 10,
   },
   logoContainer: {
@@ -68,10 +64,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 1,
-    borderColor: "grey",
+    borderColor: "white",
     borderRadius: 20,
     padding: 10,
     marginLeft: 10, 
+    backgroundColor:"white"
   },
   searchInput: {
     flex: 1,
