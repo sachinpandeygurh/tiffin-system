@@ -21,7 +21,7 @@ export default function signup() {
             {/* <CheckData/> */}
           </ScrollView>
 
-          <Footer />
+          {/* <Footer /> */}
         </View>
       </LinearGradient>
     </SafeAreaView>

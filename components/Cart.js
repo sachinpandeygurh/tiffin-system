@@ -12,395 +12,71 @@ import {
   Alert,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import axios from "axios";
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
   const [totalAmount, setTotalAmount] = useState(0);
   const [products, setProducts] = useState([]);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [cart, setCart] = useState([]);
 
   useEffect(() => {
     _retrieveData();
-    fetchData();
-  }, [products]);
 
-  const fetchOrderId = async () => {
-    try {
-      const orderid = "order_CD" + generateUniqueId(12);
-      setOrderId(orderid);
-    } catch (error) {
-      console.error("Error fetching order ID:", error);
-    }
-  };
-
-  const totalPrice = () => {
-    try {
-      let amount = 0;
-
-      cart.forEach((item) => {
-        const selectedSize = item.selectedSize;
-        const quantity = selectedSize.quantity;
-        const price = selectedSize.price;
-        const itemTotal = Math.round(
-          (price - (price * item.discount) / 100) * item.customQuantity
-        );
-        amount += itemTotal;
-      });
-
-      if (amount <= 499) {
-        amount += 0;
-      } else if (amount >= 500 && amount <= 999) {
-        amount += 30;
-      } else if (amount >= 1000) {
-        amount += 60;
-      }
-
-      AsyncStorage.setItem("amount", JSON.stringify(amount));
-      return amount;
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const calculateTotalAmount = () => {
-    let amount = 0;
-    cart?.forEach((item) => {
-      const selectedSize = item.selectedSize;
-      const quantity = selectedSize.quantity;
-      const price = selectedSize.price;
-      const itemTotal = Math.round(price * item.customQuantity);
-      amount += itemTotal;
-    });
-    return amount;
-  };
-
-  const discountamt = () => {
-    try {
-      let amount = 0;
-
-      cart?.forEach((item) => {
-        const selectedSize = item.selectedSize;
-        const quantity = selectedSize.quantity;
-        const price = selectedSize.price;
-
-        const itemTotal = Math.round(
-          ((price * item.discount) / 100) * item.customQuantity
-        );
-        amount += itemTotal;
-      });
-
-      return amount;
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  // console.log("cart",cart);
+  }, [cartItems]);
 
   const _retrieveData = async () => {
     try {
       const value = await AsyncStorage.getItem("@cart");
       if (value !== null) {
         const cartData = JSON.parse(value);
-        // console.log("cartData", cartData);
         setProducts(cartData);
         setCartItems(cartData);
-        calculateTotal(cartData);
+
         setCart(cartData);
       }
     } catch (error) {
       console.log(error);
     }
   };
-  console.log("cartItems", cartItems);
-  console.log("totalAmount", totalAmount);
 
-  const loadRazorpay = async () => {
-    try {
-      const result = await fetch(
-        "https://dmart.onrender.com/api/v1/payment/create-order",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            cart: cartItems.filter((item) => Object.keys(item).length !== 0),
-            amount: totalAmount,
-           
-          }),
-        }
-      );
-      const data = await result.json();
-      const { amount, id: order_id, currency } = data;
-
-      const razorpayKeyResult = await fetch(
-        "https://dmart.onrender.com/api/v1/payment/get-razorpay-key"
-      );
-      const razorpayKeyData = await razorpayKeyResult.json();
-      const razorpayKey = razorpayKeyData.data.key;
-
-      const options = {
-        description: "Transaction to Manasvi",
-        image: "https://example.com/your_logo.png",
-        currency: currency,
-        key: razorpayKey,
-        amount: amount * 100, // Razorpay expects amount in paisa
-        name: "Manasvi Technologies",
-        prefill: {
-          email: "manasvi@gmail.com",
-          contact: "1111111111",
-          name: "Manasvi Technologies",
-        },
-        theme: { color: "#80c0f0" },
-      };
-
-      RazorpayCheckout.open(options)
-        .then(async (response) => {
-          // Handle success
-          await fetch("https://dmart.onrender.com/api/v1/payment/pay-order", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              paymentMode: true,
-              amount: amount,
-              products: cartItems,
-              razorpay: {
-                orderId: response.razorpay_order_id,
-                paymentId: response.razorpay_payment_id,
-                signature: response.razorpay_signature,
-              },
-              buyer: auth?.user?._id || "65b8daf785afa34463099f72",
-            }),
-          });
-
-          // Clear the cart
-          setCart([]);
-          router.push("account");
-        })
-        .catch((error) => {
-          // Handle error
-          console.log("Error:", error);
-        });
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };
-
-  const fetchData = async () => {
-    try {
-      const { data } = await axios.get(
-        `https://dmart.onrender.com/api/v1/product/get-product/${products}`
-      );
-      setProducts(data?.product);
-      // getProductAllPhoto(data?.product?._id);
-
-      const pd = data?.product?.pricedata;
-      const pdata = pd ? JSON.parse(pd) : {};
-
-      for (const propertyName in pdata) {
-        if (
-          pdata.hasOwnProperty(propertyName) &&
-          Array.isArray(pdata[propertyName])
-        ) {
-          const u = propertyName;
-          setUnit(u);
-        }
-      }
-
-      const qandp =
-        pdata.kg ||
-        pdata.gm ||
-        pdata.liter ||
-        pdata.ml ||
-        pdata.meter ||
-        pdata.cm ||
-        pdata.pcs ||
-        pdata.size ||
-        [];
-      // setSiPi(qandp);
-    } catch (error) {
-      console.log("fetchData",error);
-    }
-  };
-
-  // console.log("Products", products);
-
-  const calculateTotal = (items) => {
-    const total = items.reduce((acc, item) => {
-      const itemPrice =
-        typeof item.productPrice === "number" ? item.productPrice : 0;
-      return acc + itemPrice;
-    }, 0);
-    setTotalAmount(total);
-  };
-
-  const _removeData = async () => {
-    try {
-      await AsyncStorage.removeItem("@cart");
-      console.log("Data removed successfully!");
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handleQuantityChange = async (productId, newQuantity) => {
-    try {
-      const cartString = await AsyncStorage.getItem("@cart");
-      if (!cartString) {
-        return;
-      }
-  
-      let cart = JSON.parse(cartString);
-      const updatedCart = cart.map((product) => {
-        if (product.productId === productId) {
-          return { ...product, quantity: newQuantity };
-        }
-        return product;
-      });
-  
-      await AsyncStorage.setItem("@cart", JSON.stringify(updatedCart));
-  
-      console.log(`Quantity for product with productId ${productId} updated successfully!`);
-      _retrieveData(); // Assuming _retrieveData is used to update the UI with the latest data
-    } catch (error) {
-      console.error("Error updating quantity:", error);
-    }
-  };
-  
   const handleRemove = async (productId) => {
     try {
       const cartString = await AsyncStorage.getItem("@cart");
       if (!cartString) {
         return;
       }
-  
       let cart = JSON.parse(cartString);
-      // Filter out the product to be removed
-      const updatedCart = cart.filter((product) => product.productId !== productId);
+      const updatedCart = cart.filter(
+        (product) => product.productId !== productId
+      );
   
       await AsyncStorage.setItem("@cart", JSON.stringify(updatedCart));
   
-      console.log(`Product with productId ${productId} removed from cart successfully!`);
-      _retrieveData(); // Assuming _retrieveData is used to update the UI with the latest data
+      console.log(
+        `Product with productId ${productId} removed from cart successfully!`
+      );
+  
+      // Update the cartItems state directly
+      setCartItems(updatedCart);
+  
+      _retrieveData();
     } catch (error) {
       console.error("Error removing product from cart:", error);
     }
   };
   
-  
 
-  const renderItem = ({ item }) => (
-    <View style={styles.cartItem}>
-      <Text style={styles.itemName}>{item.productName}</Text>
-      <Text style={styles.itemPrice}>&#x20B9;{item.productPrice}</Text>
-    </View>
-  );
-
-  const addressCheckout = () => {
-    return (
-      <View>
-        {auth?.user?.address ? (
-          <>
-            <View style={styles.mb3TextCenterTextLeft}>
-              <View style={styles.hr} />
-              <Text>
-                <Text style={styles.bold}>Current Address</Text>
-              </Text>
-              <Text>{auth?.user?.address}</Text>
-              <View style={styles.hr} />
-              <Text>
-                <Text style={styles.bold}>Shipping Address</Text>
-              </Text>
-              <Text>
-                {auth?.user?.shipping_address} {auth?.user?.pincode}{" "}
-                {auth?.user?.landmark} {auth?.user?.altername_phone}{" "}
-                {auth?.user?.city_district_town}
-              </Text>
-              <TouchableOpacity
-                style={styles.btnOutlineWarning}
-                onPress={() => router.push("(account)")}
-              >
-                <Text>Update Address</Text>
-              </TouchableOpacity>
-            </View>
-          </>
-        ) : (
-          <View style={styles.mb3}>
-            {auth?.token ? (
-              <TouchableOpacity
-                style={styles.btnOutlineWarning}
-                onPress={() => router.push("(account)")}
-              >
-                <Text>Update Address</Text>
-              </TouchableOpacity>
-            ) : (
-              <TouchableOpacity
-                style={styles.btnOutlineWarning}
-                onPress={() => router.push("(login)", { state: "/cart" })}
-              >
-                <Text>Please Login to checkout</Text>
-              </TouchableOpacity>
-            )}
-          </View>
-        )}
-        <View style={styles.mt2}>
-          {!auth?.token || !cart?.length ? (
-            <></>
-          ) : (
-            <>
-              <TouchableOpacity
-                style={[styles.btnSuccess, { width: 150 }]}
-                onPress={loadRazorpay}
-                disabled={loading || !auth?.user?.shipping_address}
-              >
-                <Text>{loading ? "Processing ...." : "Pay Online"}</Text>
-              </TouchableOpacity>
-              {/* COD payment */}
-              <TouchableOpacity
-                style={[styles.btnSuccess, styles.m2]}
-                onPress={handleCashOnDelivery}
-                disabled={!auth?.user?.address || showOtpInput}
-              >
-                <Text>Cash On Delivery</Text>
-              </TouchableOpacity>
-
-              {showOtpInput && !verified && (
-                // Show OTP input only when 'showOtpInput' is true and OTP is not verified
-                <View>
-                  <Text>Enter OTP</Text>
-                  <TextInput
-                    style={styles.input}
-                    value={inputValue}
-                    onChangeText={(text) => setInputValue(text)}
-                  />
-                  <TouchableOpacity onPress={handleSubmit}>
-                    <Text>Verify OTP via Call</Text>
-                  </TouchableOpacity>
-                </View>
-              )}
-            </>
-          )}
-        </View>
-      </View>
-    );
-  };
 
   return (
-    <React.Fragment>
+    <ScrollView>
       <View style={styles.productContainer}>
         {cartItems
           .filter((item) => Object.keys(item).length !== 0)
           .map((p) => (
-            <TouchableOpacity key={p.productId + 3} style={styles.productItem}>
+            <View key={p.productId} style={styles.productItem}>
               <View style={styles.imageContainer}>
                 <Image
                   source={{
-                    uri: `https://dmart.onrender.com/api/v1/product/product-photo/${p.productId}`,
+                    uri: `https://dptf.onrender.com/api/v1/item/get-photo/${p.productId}`,
                   }}
                   style={styles.image}
                   resizeMode="cover"
@@ -408,98 +84,95 @@ const Cart = () => {
               </View>
               <ScrollView style={styles.productDetails}>
                 <Text style={styles.productName}>{p.productName}</Text>
+                <Text style={styles.productDescription}>{p.productDescription}</Text>
+
                 <View style={styles.detailRow}>
-                  <Text
+                  <Text style={styles.Price}>&#x20B9; {p.productPrice * p.quantity}</Text>
+                </View>
+
+                <View style={styles.detailRow}>
+                  <Pressable
                     style={{
-                      color: "gray",
-                      textDecorationLine: "line-through",
+                      backgroundColor: p.schedule?.morning ? "red" : "white",
+                      padding: 10,
+                      borderWidth: p.schedule?.morning ? 0 : 1,
+                      borderColor: "red",
+                      borderRadius: 10,
                     }}
                   >
-                    {p.productDiscount
-                      ? Math.floor(
-                          p.productPrice *
-                            p.quantity *
-                            (100 / (100 - p.productDiscount))
-                        )
-                      : ""}
-                  </Text>
-                  <Text style={styles.price}>
-                    &#x20B9; {p.productPrice * p.quantity}
+                    <Text
+                      style={{
+                        color: p.schedule?.morning || p.schedule?.evening ? "white" : "red",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      {p.schedule?.morning && p.schedule?.evening
+                        ? "morning and evening"
+                        : p.schedule?.morning
+                          ? "morning"
+                          : p.schedule?.evening
+                            ? "evening"
+                            : "morning"}
+                    </Text>
+
+                  </Pressable>
+                </View>
+
+                <View style={styles.detailRow}>
+                  <Text style={{ color: p.category === "veg" ? "green" : "red" }}>
+                    {p.category}
                   </Text>
                 </View>
-                <View style={styles.detailRow}>
-                  {p.productDiscount ? (
-                    <Text style={styles.detailValue}>
-                      {p.productDiscount}% OFF
-                    </Text>
-                  ) : (
-                    ""
-                  )}
+
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Text style={{ fontStyle: "italic", fontWeight: "800" }}>
+                    {p.thaliType}
+                  </Text>
                 </View>
               </ScrollView>
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                }}
-              >
-                <Pressable
-                  style={styles.quantityButton}
-                  onPress={() => {
-                    handleQuantityChange(p.productId, p.quantity - 1);
-                    console.log(p.quantity - 1);
-                  }}
-                  disabled={p.quantity === 1}
-                >
-                  <Text style={styles.quantityButtonText}>-</Text>
-                </Pressable>
-                <View style={styles.quantityparent}>
-                  <Text style={styles.quantity}>{p.quantity}</Text>
-                </View>
-                <Pressable
-                  style={styles.quantityButton}
-                  onPress={() => {
-                    handleQuantityChange(p.productId, p.quantity + 1);
-                    console.log(p.quantity + 1);
-                  }}
-                >
-                  <Text style={styles.quantityButtonText}>+</Text>
-                </Pressable>
-              </View>
+
               <Pressable
-                style={styles.removeButton}
-                onPress={() => handleRemove(p.productId)}
+                style={{
+                  padding: 10,
+                  backgroundColor: "white",
+                  borderWidth: 0.5,
+                  borderColor: "blue",
+                  borderRadius: 5,
+                  width: "80%",
+                  marginHorizontal: "10%",
+                  marginBottom: 20,
+                }}
+                onPress={() =>
+                  handleRemove(p.productId)
+                }
               >
-                <Text style={styles.removeButtonText}>Remove</Text>
+                <Text
+                  style={{
+                    textAlign: "center",
+                    color: "blue",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Remove
+                </Text>
               </Pressable>
-            </TouchableOpacity>
+            </View>
           ))}
-        {totalAmount !== 0 && (
-          <View>
-            <FlatList
-              data={cartItems.filter((item) => Object.keys(item).length !== 0)}
-              renderItem={renderItem}
-              keyExtractor={(item, index) => index.toString() + 1}
-            />
-            <Text style={styles.detailValue}>Total Amount: <Text style={styles.detailValue}>&#x20B9;{totalAmount}</Text></Text>
-            <TouchableOpacity
-              style={styles.checkoutButton}
-              onPress={loadRazorpay}
-            >
-              <Text style={styles.checkoutButtonText}>Checkout</Text>
-            </TouchableOpacity>
-          </View>
-        )}
       </View>
 
-      {totalAmount === 0 && (
+      {cartItems.length === 0 && (
         <View style={styles.emptyCartContainer}>
           <Text style={styles.emptyCartText}>Hello Guest</Text>
           <Text style={styles.emptyCartText}>Your Cart Is Empty</Text>
         </View>
       )}
-    </React.Fragment>
+    </ScrollView>
   );
 };
 
@@ -568,25 +241,32 @@ const styles = StyleSheet.create({
   },
   productContainer: {
     marginTop: 16,
-    marginBottom:20,
-    // paddingBottom:300
+    marginBottom: 20,
+   flexDirection:"row",
+   justifyContent:"space-between",
+   alignItems:"center",
+   flexWrap:"wrap"
   },
   productItem: {
     marginBottom: 16,
     borderWidth: 1,
     borderColor: "#ccc",
     borderRadius: 8,
-    padding: 16,
+    padding: 6,
     backgroundColor: "white",
+   
+    minWidth:150,
+    maxWidth:200,
+
   },
   imageContainer: {
     marginBottom: 8,
   },
   image: {
-    width: "100%",
-    height: 50,
+   
+    height: 90,
     borderRadius: 8,
-    paddingVertical: 250,
+    paddingVertical: 20,
   },
   productDetails: {
     marginBottom: 8,

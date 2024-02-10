@@ -4,7 +4,6 @@ import Login from '../../components/auth/Login'
 import CheckData from '../../components/auth/CheckData'
 import { LinearGradient } from "expo-linear-gradient";
 import Footer from '../../components/Footer';
-import Header from '../../components/Header';
 
 export default function login() {
   return (
@@ -17,7 +16,7 @@ export default function login() {
 
           <ScrollView style={{ zIndex: 1, marginVertical: 80 }}>
             <Login />
-            {/* <CheckData/> */}
+            <CheckData/>
           </ScrollView>
 
           <Footer />

@@ -12,43 +12,17 @@ const Login = () => {
   // form function
   const handleSubmit = async () => {
     try {
-      const res = await axios.post("https://dmart.onrender.com/api/v1/auth/login", {
+      const res = await axios.post("https://dptf.onrender.com/api/v1/auth/login", {
         email,
         password,
       });
-
+      console.log("res", res?.data);
       if (res && res.data.success) {
         // Save data to AsyncStorage
-        await AsyncStorage.setItem("@MySuperStore:key", JSON.stringify(res.data));
+        await AsyncStorage.setItem("@MySuperStore:key", JSON.stringify(res?.data?.user));
         console.log("Data stored successfully!");
 
-        // Fetch user data and cart items
-        const userData = await axios.get(
-          `https://dmart.onrender.com/api/v1/cart/get-cart-item/${res.data.user._id}`,
-          {
-            headers: {
-              Authorization: `${res.data.token}`,
-            },
-          }
-        );
-
-        if (userData?.data?.getItems?.cartItems) {
-          const existingCart = JSON.parse(await AsyncStorage.getItem("cart")) || [];
-          const newCartItems = userData.data.getItems.cartItems;
-
-          newCartItems.forEach((newCartItem) => {
-            const existingItemIndex = existingCart.findIndex(
-              (existingItem) => existingItem._id === newCartItem._id
-            );
-            if (existingItemIndex !== -1) {
-              existingCart[existingItemIndex].customQuantity += newCartItem.customQuantity;
-            } else {
-              existingCart.push(newCartItem);
-            }
-          });
-
-          await AsyncStorage.setItem("cart", JSON.stringify(existingCart));
-        }
+        Alert.alert("login", "successfully!");
 
         navigation.navigate("index");
         console.log("Navigation successful!");
@@ -83,85 +57,85 @@ const Login = () => {
         <Text style={styles.buttonText}>LOGIN</Text>
       </TouchableOpacity>
 
-      <View  style={{flexDirection:"row" , alignContent:"center", justifyContent:"space-between", width:"90%", marginTop:10}} >
-        <TouchableOpacity style={{flexDirection:"row" , alignContent:"center", justifyContent:"space-between"}} onPress={() =>  navigation.navigate('signup')}>
-          <Text>New Customer? </Text>
+      <View style={{ flexDirection: "column", alignContent: "center", justifyContent: "space-between", width: "90%", marginTop: 10 }} >
+        <TouchableOpacity style={{ flexDirection: "row", alignContent: "center", justifyContent: "center" }} onPress={() => navigation.navigate('signup')}>
+          <Text style={{paddingRight:20}}>New Customer? </Text>
           <Text style={styles.linkText}>Sign Up</Text>
         </TouchableOpacity>
-<Text></Text>
+        <Text></Text>
         <TouchableOpacity onPress={() => navigation.navigate("ForgotPassword")}>
           <Text style={styles.forgotPassword}>Forgot Password</Text>
         </TouchableOpacity>
       </View>
-      
+
       <Text style={styles.policyText}>
         <TouchableOpacity style={styles.policytxt} onPress={() => navigation.navigate("Policy")}>
           <Text style={styles.linkText}>Terms of Use</Text>
         </TouchableOpacity>
-     
+
         <TouchableOpacity style={styles.policytxt} onPress={() => navigation.navigate("Policy")}>
           <Text style={styles.linkText}>Privacy Policy</Text>
         </TouchableOpacity>
-      
+
       </Text>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-    container: {
-        // marginTop:100,
+  container: {
+    // marginTop:100,
     //   flex: 1,
-      justifyContent: "center",
-      alignItems: "center",
-      padding: 20,
-    },
-    title: {
-      fontSize: 24,
-      fontWeight: "bold",
-      marginBottom: 20,
-    },
-    input: {
-        height:35,
-      borderWidth: 1,
-      borderColor: '#ccc',
-      borderRadius: 8,
-      padding: 10,
-      marginBottom: 20,
-      width: "100%",
-    },
-    button: {
-      backgroundColor: '#ffa502',
-      borderRadius: 80,
-      padding: 15,
-      width: "100%",
-      alignItems: "center",
-    },
-    buttonText: {
-      color: 'black',
-      fontWeight: 'bold',
-      // fontSize: 50, // Uncomment if you want to increase the font size
-    },
-    linkText: {
-      textDecorationLine: 'underline',
-      color: 'blue',
-      letterSpacing: 1, // There's a typo here. It should be 'letterSpacing', not 'tEXTspace'
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 20,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 20,
+  },
+  input: {
+    height: 35,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 8,
+    padding: 10,
+    marginBottom: 20,
+    width: "100%",
+  },
+  button: {
+    backgroundColor: '#ffa502',
+    borderRadius: 80,
+    padding: 15,
+    width: "100%",
+    alignItems: "center",
+  },
+  buttonText: {
+    color: 'black',
+    fontWeight: 'bold',
+    // fontSize: 50, // Uncomment if you want to increase the font size
+  },
+  linkText: {
+    textDecorationLine: 'underline',
+    color: 'blue',
+    letterSpacing: 1, // There's a typo here. It should be 'letterSpacing', not 'tEXTspace'
     //   paddingVertical: 10,
-    },
-    forgotPassword: {
-      color: 'blue',
-      textDecorationLine: 'underline',
-      marginBottom: 10,
-    },
-    policyText: {
-      flexDirection: "row",
-      alignItems: "center",
-      justifyContent: "space-between",
+  },
+  forgotPassword: {
+    color: 'blue',
+    textDecorationLine: 'underline',
+    marginBottom: 10,
+  },
+  policyText: {
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "space-between",
     //   marginTop: 10,
-    },
-    policytxt: {
-      padding: 20,
-    },
-  });
-  
+  },
+  policytxt: {
+    padding: 20,
+  },
+});
+
 export default Login;

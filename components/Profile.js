@@ -101,7 +101,7 @@ const Profile = () => {
   const handleView = () => {
     setShow(!show);
   };
-
+console.log("auth", auth);
   return (
     <View style={{ flex: 1, marginBottom: 40 }}>
       <ScrollView>
@@ -117,13 +117,13 @@ const Profile = () => {
           {show && (
             <View>
           <TextInput
-            value={name}
+            value={auth?.name}
             onChangeText={(text) => setName(text)}
             placeholder="Enter Your Name"
             style={{ borderWidth: 1, padding: 8, marginBottom: 16 }}
           />
           <TextInput
-            value={email}
+            value={auth?.email}
             onChangeText={(text) => setEmail(text)}
             placeholder="Enter Your Email"
             style={{ borderWidth: 1, padding: 8, marginBottom: 16 }}
@@ -137,13 +137,13 @@ const Profile = () => {
             style={{ borderWidth: 1, padding: 8, marginBottom: 16 }}
           />
           <TextInput
-            value={phone}
+            value={auth?.phone}
             onChangeText={(text) => setPhone(text)}
             placeholder="Enter Your Phone"
             style={{ borderWidth: 1, padding: 8, marginBottom: 16 }}
           />
           <TextInput
-            value={address}
+            value={auth?.address}
             onChangeText={(text) => setAddress(text)}
             placeholder="Enter Your Address"
             multiline
@@ -159,13 +159,13 @@ const Profile = () => {
             style={{ borderWidth: 1, padding: 8, marginBottom: 16 }}
           />
           <TextInput
-            value={locality}
+            value={auth?.locality}
             onChangeText={(text) => setLocality(text)}
             placeholder="Enter Your Locality"
             style={{ borderWidth: 1, padding: 8, marginBottom: 16 }}
           />
           <TextInput
-            value={pincode}
+            value={auth?.pincode}
             onChangeText={(text) => setPincode(text)}
             placeholder="Enter Your Pincode"
             style={{ borderWidth: 1, padding: 8, marginBottom: 16 }}
@@ -177,13 +177,13 @@ const Profile = () => {
             style={{ borderWidth: 1, padding: 8, marginBottom: 16 }}
           />
           <TextInput
-            value={landmark}
+            value={auth?.landmark}
             onChangeText={(text) => setLandmark(text)}
             placeholder="Enter Your Landmark"
             style={{ borderWidth: 1, padding: 8, marginBottom: 16 }}
           />
           <TextInput
-            value={alternate_phone}
+            value={auth?.phone}
             onChangeText={(text) => setAlternate_phone(text)}
             placeholder="Enter Your Alternate Phone"
             style={{ borderWidth: 1, padding: 8, marginBottom: 16 }}

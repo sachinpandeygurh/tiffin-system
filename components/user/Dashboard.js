@@ -10,7 +10,7 @@ const Dashboard = () => {
       try {
         const value = await AsyncStorage.getItem('@MySuperStore:key');
         if (value !== null) {
-        
+
           const authData = JSON.parse(value);
           setAuth(authData);
         }
@@ -20,32 +20,31 @@ const Dashboard = () => {
     };
 
     retrieveData();
-  }, []);
-// if(auth?.user?.role!==0){
-// Alert.Alert("Sorry you are not authurise to login please download to Manasvi admin app Admin app or visit manasvi ecomm website ")
-
-// }
+  }, [auth]);
 
   return (
     <View style={styles.container}>
-      <View style={styles.column}>
-        <View style={{ padding: 20 }}>
-          <Text style={{ fontWeight: 'bold' , fontSize:20}}>About {auth?.user?.name}</Text>
-        </View>
-
-        <View style={styles.mainContent}>
-          <View style={styles.card}>
-            <Text style={styles.heading}>User Name: {auth?.user?.name}</Text>
-            <View style={styles.hr} />
-            <Text style={styles.heading}>User Email: {auth?.user?.email}</Text>
-            <View style={styles.hr} />
-            <Text style={styles.heading}>User Number: {auth?.user?.phone}</Text>
-            <View style={styles.hr} />
-            <Text style={styles.heading}>User Address: {auth?.user?.address}</Text>
-          </View>
+    <View style={styles.column}>
+      <View style={{ padding: 20 }}>
+        <Text style={{ fontWeight: 'bold', fontSize: 20 }}>About {auth?.name}</Text>
+      </View>
+  
+      <View style={styles.mainContent}>
+        <View style={styles.card}>
+          <Text style={styles.heading}>User Name: {auth?.name}</Text>
+          <View style={styles.hr} />
+          <Text style={styles.heading}>User Email: {auth?.email}</Text>
+          <View style={styles.hr} />
+          <Text style={styles.heading}>User Number: {auth?.phone}</Text>
+          <View style={styles.hr} />
+          <Text style={styles.heading}>User Address: {auth?.address}</Text>
+          <View style={styles.hr} />
+          <Text style={styles.heading}>User Pincode: {auth?.pincode}</Text>
         </View>
       </View>
     </View>
+  </View>
+  
   );
 };
 
@@ -59,8 +58,8 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     fontWeight: "bold",
-    alignItems:"center",
-   
+    alignItems: "center",
+
   },
   sidebar: {
     flex: 1,
@@ -68,7 +67,7 @@ const styles = StyleSheet.create({
   },
   mainContent: {
     flex: 2,
-    width:350
+    width: 350
   },
   card: {
     padding: 16,

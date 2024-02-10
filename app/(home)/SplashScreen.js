@@ -14,7 +14,7 @@ export default function SplashScreen({ navigation }) {
       useNativeDriver: true,
     }).start(() => {
      
-      router.push('/(home)');
+      router.push('login');
 
     });
   }, [fadeAnim, navigation]);

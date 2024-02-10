@@ -7,7 +7,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import Footer from '../../components/Footer';
 
 const cart = () => {
- 
+
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -17,8 +17,8 @@ const cart = () => {
             <Image style={styles.logo} source={require("../../img/c_logo.png")} />
           </View>
 
-          <ScrollView style={{ zIndex: 1, marginVertical: 8, width:"90%" }}>
-         <Cart/>
+          <ScrollView style={{ zIndex: 1, marginVertical: 8, width: "90%" }}>
+            <Cart />
             {/* <CheckData/> */}
           </ScrollView>
 
@@ -36,13 +36,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   logoContainer: {
-    backgroundColor: "black",
+  
     borderRadius: 100,
     alignItems: "center",
     justifyContent: "center",
     width: 100,
     height: 40,
-    marginTop: 4,
+    marginTop: 20,
   },
   logo: {
     width: 50,

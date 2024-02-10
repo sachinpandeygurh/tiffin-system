@@ -17,7 +17,7 @@ const Signup = () => {
 
   const handleSubmit = async () => {
     try {
-      const res = await axios.post('https://your-api-url/api/v1/auth/register', {
+      const res = await axios.post('ttps://dptf.onrender.com/api/v1/auth/register', {
         name,
         email,
         password,
@@ -28,7 +28,7 @@ const Signup = () => {
 
       if (res && res.data.success) {
         Alert.alert('Success', res.data.message);
-        await AsyncStorage.setItem('@MySuperStore:key', JSON.stringify(res?.data?.user?._id));
+        // await AsyncStorage.setItem('@MySuperStore:key', JSON.stringify(res?.data?.user?._id));
         navigation.navigate('Login');
       } else {
         Alert.alert('Error', res.data.message);
