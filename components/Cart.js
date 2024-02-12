@@ -10,17 +10,22 @@ import {
   ScrollView,
   Modal,
   Alert,
+  TouchableHighlight,
+  SafeAreaView,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import RazorpayCheckout from 'react-native-razorpay';
+
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
   const [totalAmount, setTotalAmount] = useState(0);
   const [products, setProducts] = useState([]);
   const [cart, setCart] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0);
 
   useEffect(() => {
     _retrieveData();
-
+    calculateTotal();
   }, [cartItems]);
 
   const _retrieveData = async () => {
@@ -48,26 +53,59 @@ const Cart = () => {
       const updatedCart = cart.filter(
         (product) => product.productId !== productId
       );
-  
+
       await AsyncStorage.setItem("@cart", JSON.stringify(updatedCart));
-  
+
       console.log(
         `Product with productId ${productId} removed from cart successfully!`
       );
-  
+
       // Update the cartItems state directly
       setCartItems(updatedCart);
-  
+
       _retrieveData();
     } catch (error) {
       console.error("Error removing product from cart:", error);
     }
   };
-  
+
+  const calculateTotal = () => {
+    const total = cartItems.reduce((acc, item) => {
+      return acc + item.quantity * item.productPrice;
+    }, 0);
+    setTotalPrice(total);
+  };
+
+  const razorpayHandler =  () => {
+    const options = {
+      description: 'manvika consultation',
+      image: 'https://i.imgur.com/3g7nmJC.jpg',
+      currency: 'INR',
+      key: 'rzp_test_fe2VQqTgAKMFBF',
+      amount: '10000',
+      name: 'Acme Corp',
+      order_id: '',
+      prefill: {
+        email: 'sachinmernstack@gmail.com',
+        contact: '8319697083',
+        name: 'Arpit Jain'
+      },
+      theme: { color: '#53a20e' }
+    };
+    console.log(RazorpayCheckout?.open(options));
+    RazorpayCheckout?.open(options)?.then((data) => {
+
+      alert(`Success: ${data.razorpay_payment_id}`);
+    }).catch((error) => {
+      // handle failure
+      alert(`Error: ${error.code} | ${error.description}`);
+      console.log(`Error: ${error.code} | ${error.description}`);
+    });
+  };
 
 
   return (
-    <ScrollView>
+    <ScrollView style={{ marginVertical: 80 }}>
       <View style={styles.productContainer}>
         {cartItems
           .filter((item) => Object.keys(item).length !== 0)
@@ -172,6 +210,12 @@ const Cart = () => {
           <Text style={styles.emptyCartText}>Your Cart Is Empty</Text>
         </View>
       )}
+
+      <Pressable onPress={razorpayHandler} style={styles.checkoutButton}>
+        <Text style={styles.checkoutButtonText}>
+          Checkout <Text style={{ color: "blue" }}>{`\u20B9${totalPrice}`} </Text>
+        </Text>
+      </Pressable>
     </ScrollView>
   );
 };
@@ -233,6 +277,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginTop: 16,
     alignItems: "center",
+    marginHorizontal: "25%"
   },
   checkoutButtonText: {
     color: "#fff",
@@ -242,10 +287,10 @@ const styles = StyleSheet.create({
   productContainer: {
     marginTop: 16,
     marginBottom: 20,
-   flexDirection:"row",
-   justifyContent:"space-between",
-   alignItems:"center",
-   flexWrap:"wrap"
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    flexWrap: "wrap"
   },
   productItem: {
     marginBottom: 16,
@@ -254,16 +299,17 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 6,
     backgroundColor: "white",
-   
-    minWidth:150,
-    maxWidth:200,
+
+
+    maxWidth: 200,
+    maxHeight: 350
 
   },
   imageContainer: {
     marginBottom: 8,
   },
   image: {
-   
+
     height: 90,
     borderRadius: 8,
     paddingVertical: 20,

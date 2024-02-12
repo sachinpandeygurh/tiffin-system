@@ -29,7 +29,7 @@ export default function SplashScreen({ navigation }) {
           />
         </Pressable>
         <View style={styles.titleContainer}>
-          <Text style={styles.title}>Manasvi Dmart</Text>
+          <Text style={styles.title}>Manvika Tiffins Services</Text>
         </View>
       </View>
     </View>

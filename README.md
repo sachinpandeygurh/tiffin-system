@@ -12,7 +12,7 @@ Tiffins Services is a user-friendly React Native app designed to streamline the 
 ## Panels:
 
 - **User Panel:** Full access to features for ordering, managing profiles, and tracking orders.
-- **Tiffin Center Panel:** (Not available in this version; reserved for future development)
+- **Tiffin Center Panel:** (Not available in this version; reserved for future development)C:\SachinPandeyji\vsCode\React-Native\tiffin-system\README.mdC:\SachinPandeyji\vsCode\React-Native\tiffin-system\README.mdC:\SachinPandeyji\vsCode\React-Native\tiffin-system\README.md
 - **Admin Panel:** (Not available in this version; reserved for future development)
 
 ## Features:

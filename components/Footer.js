@@ -56,38 +56,56 @@ const Footer = () => {
   useEffect(() => {
     retrieveData();
     retrieveCart();
-  }, [cartArray, auth, cartSize]);
+    handlePress()
+  }, [cartArray, auth, cartSize , pressedIcons]);
 
   const handlePress = (icon) => {
-    setPressedIcons({
-      Home: false,
-      Notifications: false,
-      Account: false,
-      Cart: false,
-      [icon]: true,
-    });
-    
- 
-
-  switch (icon) {
-    case "Home":
-      router.push("(home)");
-      break;
-    case "Notifications":
-      router.push("notifications");
-      break;
-    case "Account":
-      router.push("account");
-      break;
-    case "Cart":
-      router.push("cart");
-      break;
-    default:
-      router.push("index")
-      break;
-  }
-
-};
+    switch (icon) {
+      case "Home":
+        router.push("/(home)");
+        setPressedIcons((prevState) => ({
+          ...prevState,
+          Home: true,
+          Notifications: false, 
+          Account: false,
+          Cart: false,
+        }));
+        break;
+      case "Notifications":
+        router.push("notifications");
+        setPressedIcons((prevState) => ({
+          ...prevState,
+          Home: false,
+          Notifications: true,
+          Account: false,
+          Cart: false,
+        }));
+        break;
+      case "Account":
+        router.push("account");
+        setPressedIcons((prevState) => ({
+          ...prevState,
+          Home: false,
+          Notifications: false,
+          Account: true,
+          Cart: false,
+        }));
+        break;
+      case "Cart":
+        router.push("cart");
+        setPressedIcons((prevState) => ({
+          ...prevState,
+          Home: false,
+          Notifications: false,
+          Account: false,
+          Cart: true,
+        }));
+        break;
+      default:
+        break;
+    }
+  };
+  
 
   const renderText = (text) => {
     return pressedIcons[text] ? (
@@ -225,3 +243,5 @@ const styles = StyleSheet.create({
 });
 
 export default Footer;
+
+// routing is correct but pressedIcons is not work
