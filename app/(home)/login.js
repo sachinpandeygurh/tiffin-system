@@ -1,11 +1,12 @@
 import { Image, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import Login from '../../components/auth/Login'
 import CheckData from '../../components/auth/CheckData'
 import { LinearGradient } from "expo-linear-gradient";
 import Footer from '../../components/Footer';
 
 export default function login() {
+ 
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <LinearGradient colors={["#7F7FD5", "#E9E4F0"]} style={{ flex: 1 }}>
@@ -16,10 +17,10 @@ export default function login() {
 
           <ScrollView style={{ zIndex: 1, marginVertical: 80 }}>
             <Login />
-            <CheckData/>
+            {/* <CheckData/> */}
           </ScrollView>
 
-          <Footer />
+          {/* <Footer /> */}
         </View>
       </LinearGradient>
     </SafeAreaView>

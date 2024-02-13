@@ -21,6 +21,13 @@ const Footer = () => {
     Cart: false,
   });
 
+  const routes = {
+    Home: "/(home)",
+    Notifications: "/notifications",
+    Account: "/account",
+    Cart: "/cart",
+  };
+
   const retrieveData = async () => {
     try {
       const value = await AsyncStorage.getItem("@MySuperStore:key");
@@ -54,58 +61,21 @@ const Footer = () => {
   };
 
   useEffect(() => {
-    retrieveData();
-    retrieveCart();
-    handlePress()
-  }, [cartArray, auth, cartSize , pressedIcons]);
+    cartArray.length===0 && retrieveData();
+    cartSize===0 && retrieveCart();
+  }, [cartArray, auth, cartSize]);
 
   const handlePress = (icon) => {
-    switch (icon) {
-      case "Home":
-        router.push("/(home)");
-        setPressedIcons((prevState) => ({
-          ...prevState,
-          Home: true,
-          Notifications: false, 
-          Account: false,
-          Cart: false,
-        }));
-        break;
-      case "Notifications":
-        router.push("notifications");
-        setPressedIcons((prevState) => ({
-          ...prevState,
-          Home: false,
-          Notifications: true,
-          Account: false,
-          Cart: false,
-        }));
-        break;
-      case "Account":
-        router.push("account");
-        setPressedIcons((prevState) => ({
-          ...prevState,
-          Home: false,
-          Notifications: false,
-          Account: true,
-          Cart: false,
-        }));
-        break;
-      case "Cart":
-        router.push("cart");
-        setPressedIcons((prevState) => ({
-          ...prevState,
-          Home: false,
-          Notifications: false,
-          Account: false,
-          Cart: true,
-        }));
-        break;
-      default:
-        break;
-    }
+    setPressedIcons((prevState) => ({
+      Home: false,
+      Notifications: false,
+      Account: false,
+      Cart: false,
+      [icon]: true,
+    }));
+
+    router.push(routes[icon]);
   };
-  
 
   const renderText = (text) => {
     return pressedIcons[text] ? (
@@ -117,9 +87,7 @@ const Footer = () => {
     <View style={styles.footerContainer}>
       <TouchableOpacity
         onPress={() => handlePress("Home")}
-        style={
-          pressedIcons.Home ? styles.bgiconContainer : styles.iconContainer
-        }
+        style={pressedIcons.Home ? styles.bgiconContainer : styles.iconContainer}
       >
         <AntDesign
           name="home"
@@ -144,9 +112,7 @@ const Footer = () => {
         <View style={styles.notificationContainer}>
           <Text style={styles.notificationCount}>01</Text>
         </View>
-        
-          {renderText("Notifications")}
-       
+        {renderText("Notifications")}
       </TouchableOpacity>
 
       <TouchableOpacity
@@ -164,9 +130,7 @@ const Footer = () => {
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => handlePress("Cart")}
-        style={
-          pressedIcons.Cart ? styles.bgiconContainer : styles.iconContainer
-        }
+        style={pressedIcons.Cart ? styles.bgiconContainer : styles.iconContainer}
       >
         <EvilIcons
           name="cart"
@@ -181,6 +145,7 @@ const Footer = () => {
     </View>
   );
 };
+
 
 const styles = StyleSheet.create({
   footerContainer: {

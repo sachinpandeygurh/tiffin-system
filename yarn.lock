@@ -5880,6 +5880,13 @@ react-is@^18.0.0:
   resolved "https://registry.npmjs.org/react-is/-/react-is-18.2.0.tgz"
   integrity sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==
 
+react-native-animatable@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.npmjs.org/react-native-animatable/-/react-native-animatable-1.4.0.tgz"
+  integrity sha512-DZwaDVWm2NBvBxf7I0wXKXLKb/TxDnkV53sWhCvei1pRyTX3MVFpkvdYBknNBqPrxYuAIlPxEp7gJOidIauUkw==
+  dependencies:
+    prop-types "^15.8.1"
+
 react-native-element-dropdown@^2.10.1:
   version "2.10.1"
   resolved "https://registry.npmjs.org/react-native-element-dropdown/-/react-native-element-dropdown-2.10.1.tgz"
@@ -5898,6 +5905,11 @@ react-native-gesture-handler@*, "react-native-gesture-handler@>= 1.0.0", react-n
     lodash "^4.17.21"
     prop-types "^15.7.2"
 
+react-native-html-to-pdf@^0.12.0:
+  version "0.12.0"
+  resolved "https://registry.npmjs.org/react-native-html-to-pdf/-/react-native-html-to-pdf-0.12.0.tgz"
+  integrity sha512-Yb5WO9SfF86s5Yv9PqXQ7fZDr9zZOJ+6jtweT9zFLraPNHWX7pSxe2dSkeg3cGiNrib65ZXGN6ksHymfYLFSSg==
+
 react-native-image-filter-kit@^0.8.0:
   version "0.8.0"
   resolved "https://registry.npmjs.org/react-native-image-filter-kit/-/react-native-image-filter-kit-0.8.0.tgz"
@@ -5909,6 +5921,11 @@ react-native-image-filter-kit@^0.8.0:
     rgba-to-rgb "^1.0.2"
     rn-color-matrices "^4.1.0"
     ts-tiny-invariant "0.0.3"
+
+react-native-loader-kit@^2.0.5:
+  version "2.0.5"
+  resolved "https://registry.npmjs.org/react-native-loader-kit/-/react-native-loader-kit-2.0.5.tgz"
+  integrity sha512-wpk0gOqRcQjoFaFsIXg4Y4fA1AJWmjrgxzwzaPpchwp7myuwkuQsQUDbBvaU/cIFj24qYmoGWmH+X27NVDB2HQ==
 
 react-native-paper@^5.11.1:
   version "5.12.3"

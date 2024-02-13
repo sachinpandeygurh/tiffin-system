@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { View, Text, TextInput, TouchableOpacity, Alert, StyleSheet } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -9,7 +9,28 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const navigation = useNavigation();
 
-  // form function
+  useEffect(() => {
+    retrieveData();
+  
+  }, []);
+  const retrieveData = async () => {
+    try {
+      const value = await AsyncStorage.getItem("@MySuperStore:key");
+      if (value !== null) {
+        const authData = JSON.parse(value);
+        
+    if(authData._id){
+      navigation.navigate("index");
+      alert('user already login ')
+    }
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+
+
   const handleSubmit = async () => {
     try {
       const res = await axios.post("https://dptf.onrender.com/api/v1/auth/login", {

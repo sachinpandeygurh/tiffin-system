@@ -6,6 +6,7 @@ import Orders from "../../components/user/Orders";
 import Profile from "../../components/Profile";
 import CheckData from "../../components/auth/CheckData";
 import Logout from "../../components/auth/Logout";
+import PrintOrderDetails from "../../components/auth/PrintOrderDetails";
 
 class Account extends React.Component {
   render() {
@@ -16,14 +17,17 @@ class Account extends React.Component {
           <View
             style={{
               alignItems: "center",
-              justifyContent: "flex-end",
+              justifyContent: "space-between",
               flexDirection: "row",
               width: "90%",
+              marginHorizontal:"5%"
             }}
           >
+            <PrintOrderDetails/> 
             <Logout />
           </View>
           <Dashboard />
+         
           <Orders />
           <Profile />
         </ScrollView>

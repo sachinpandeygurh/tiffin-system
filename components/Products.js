@@ -12,6 +12,7 @@ import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Ionicons ,AntDesign } from "@expo/vector-icons";
+import Loding from "./loding";
 
 
 const Products = () => {
@@ -229,7 +230,7 @@ const handleAddCart = async (
               justifyContent: "space-around",
             }}
           >
-            {products?.map(
+            {products&&products.length>0 ? (products?.map(
               (
                 p // quantity is not aviable in products map
               ) => (
@@ -440,7 +441,7 @@ const handleAddCart = async (
                   </Pressable>
                 </TouchableOpacity>
               )
-            )}
+            )):(<Loding/>)}
           </View>
         </View>
       </ScrollView>
