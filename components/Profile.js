@@ -26,42 +26,49 @@ const Profile = () => {
 
   // Get user data
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const value = await AsyncStorage.getItem('@MySuperStore:key');
-        if (value !== null) {
-          const authData = JSON.parse(value);
-          setAuth(authData);
-          const {
-            name,
-            email,
-            phone,
-            locality,
-            pincode,
-            address,
-            city_district_town,
-            landmark,
-            alternate_phone,
-            shipping_address,
-          } = authData?.user || {};
-          setName(name);
-          setEmail(email);
-          setPhone(phone);
-          setLocality(locality);
-          setPincode(pincode);
-          setAddress(address);
-          setCity_district_town(city_district_town);
-          setLandmark(landmark);
-          setAlternate_phone(alternate_phone);
-          setShipping_address(shipping_address);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
+   
 
-    fetchData();
+   if (auth===null){
+    setTimeout(() => {
+      
+      fetchData();
+    }, 3000);
+    }
   }, [auth?.user]);
+
+  const fetchData = async () => {
+    try {
+      const value = await AsyncStorage.getItem('@MySuperStore:key');
+      if (value !== null) {
+        const authData = JSON.parse(value);
+        setAuth(authData);
+        const {
+          name,
+          email,
+          phone,
+          locality,
+          pincode,
+          address,
+          city_district_town,
+          landmark,
+          alternate_phone,
+          shipping_address,
+        } = authData?.user || {};
+        setName(name);
+        setEmail(email);
+        setPhone(phone);
+        setLocality(locality);
+        setPincode(pincode);
+        setAddress(address);
+        setCity_district_town(city_district_town);
+        setLandmark(landmark);
+        setAlternate_phone(alternate_phone);
+        setShipping_address(shipping_address);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   // Form submission
   const handleSubmit = async () => {
@@ -101,7 +108,7 @@ const Profile = () => {
   const handleView = () => {
     setShow(!show);
   };
-console.log("auth", auth);
+// console.log("auth", auth);
   return (
     <View style={{ flex: 1, marginBottom: 40 }}>
       <ScrollView>

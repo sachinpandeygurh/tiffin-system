@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "manvika-Tiffins-Services",
-    "slug": "manvika-Tiffins-Services",
+    "slug": "manasvi-tiffin-system",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -36,8 +36,9 @@
         "origin": false
       },
       "eas": {
-        "projectId": "3565fd10-aa21-47b1-9a47-7ee013c44fa5"
+        "projectId": "8ca8eb1b-4799-417f-b743-314a3554fdfe"
       }
-    }
+    },
+    "owner": "manasvigroup"
   }
 }

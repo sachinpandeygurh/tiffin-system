@@ -9,7 +9,7 @@ export default function Logout() {
     try {
       await AsyncStorage.removeItem('@MySuperStore:key');
       Alert.alert('User Logout successfully!');
-      router.push('(home)');
+      router.push('/login');
     } catch (error) {
       console.error(error);
     }

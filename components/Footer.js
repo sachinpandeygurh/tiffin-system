@@ -1,32 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { Text, StyleSheet, View, TouchableOpacity } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useRouter } from "expo-router";
+import { useNavigation } from "expo-router";
 import {
   AntDesign,
   Feather,
   EvilIcons,
   FontAwesome5,
 } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
+
 
 const Footer = () => {
-  const router = useRouter();
+  const navigation = useRouter();
   const [auth, setAuth] = useState(null);
   const [cartArray, setCartArray] = useState([]);
   const [cartSize, setCartSize] = useState(0);
-  const [pressedIcons, setPressedIcons] = useState({
-    Home: true,
-    Notifications: false,
-    Account: false,
-    Cart: false,
-  });
-
-  const routes = {
-    Home: "/(home)",
-    Notifications: "/notifications",
-    Account: "/account",
-    Cart: "/cart",
-  };
+  const [homeScreen, setHomeScreen] = useState(true);
+  const [notificationsScreen, setNotificationsScreen] = useState(false);
+  const [accountScreen, setAccountScreen] = useState(false);
+  const [cartScreen, setCartScreen] = useState(false);
 
   const retrieveData = async () => {
     try {
@@ -61,45 +54,60 @@ const Footer = () => {
   };
 
   useEffect(() => {
-    cartArray.length===0 && retrieveData();
-    cartSize===0 && retrieveCart();
-  }, [cartArray, auth, cartSize]);
+  auth===null&& retrieveData();
+  retrieveCart();
+  }, [auth, cartSize]);
 
-  const handlePress = (icon) => {
-    setPressedIcons((prevState) => ({
-      Home: false,
-      Notifications: false,
-      Account: false,
-      Cart: false,
-      [icon]: true,
-    }));
-
-    router.push(routes[icon]);
+  const handleHome = () => {
+    navigation.push("/(home)");
+    setHomeScreen(true);
+    setNotificationsScreen(false);
+    setAccountScreen(false);
+    setCartScreen(false);
   };
 
-  const renderText = (text) => {
-    return pressedIcons[text] ? (
-      <Text style={styles.iconText}>{text}</Text>
-    ) : null;
+  const handleNotifications = () => {
+    setHomeScreen(false);
+    setNotificationsScreen(true);
+    setAccountScreen(false);
+    setCartScreen(false);
+    navigation.push("notifications");
+
+  };
+
+  const handleAccount = () => {
+    setHomeScreen(false);
+    setNotificationsScreen(false);
+    setAccountScreen(true);
+    setCartScreen(false);
+    navigation.push("account");
+  };
+
+  const handleCart = () => {
+    navigation.push("cart");
+    setHomeScreen(false);
+    setNotificationsScreen(false);
+    setAccountScreen(false);
+    setCartScreen(true);
   };
 
   return (
     <View style={styles.footerContainer}>
       <TouchableOpacity
-        onPress={() => handlePress("Home")}
-        style={pressedIcons.Home ? styles.bgiconContainer : styles.iconContainer}
+        onPress={handleHome}
+        style={homeScreen ? styles.bgiconContainer : styles.iconContainer}
       >
         <AntDesign
           name="home"
           size={24}
-          color={pressedIcons.Home ? "#ffffff" : "black"}
+          color={homeScreen ? "#ffffff" : "black"}
         />
-        {renderText("Home")}
+        {  homeScreen && <Text style={styles.iconText}>Home</Text>}
       </TouchableOpacity>
       <TouchableOpacity
-        onPress={() => handlePress("Notifications")}
+        onPress={handleNotifications}
         style={
-          pressedIcons.Notifications
+          notificationsScreen
             ? { ...styles.bgiconContainer }
             : styles.iconContainer
         }
@@ -107,45 +115,47 @@ const Footer = () => {
         <Feather
           name="bell"
           size={24}
-          color={pressedIcons.Notifications ? "#ffffff" : "black"}
+          color={notificationsScreen ? "#ffffff" : "black"}
         />
         <View style={styles.notificationContainer}>
           <Text style={styles.notificationCount}>01</Text>
         </View>
-        {renderText("Notifications")}
+        {  notificationsScreen && <Text style={styles.iconText}>Notifications</Text>}
+
       </TouchableOpacity>
 
       <TouchableOpacity
-        onPress={() => handlePress("Account")}
+        onPress={handleAccount}
         style={
-          pressedIcons.Account ? styles.bgiconContainer : styles.iconContainer
+          accountScreen ? styles.bgiconContainer : styles.iconContainer
         }
       >
         <FontAwesome5
           name="user-circle"
           size={24}
-          color={pressedIcons.Account ? "#ffffff" : "black"}
+          color={accountScreen ? "#ffffff" : "black"}
         />
-        {renderText("Account")}
+              {  accountScreen && <Text style={styles.iconText}>Account</Text>}
+
       </TouchableOpacity>
       <TouchableOpacity
-        onPress={() => handlePress("Cart")}
-        style={pressedIcons.Cart ? styles.bgiconContainer : styles.iconContainer}
+        onPress={handleCart}
+        style={cartScreen ? styles.bgiconContainer : styles.iconContainer}
       >
         <EvilIcons
           name="cart"
           size={24}
-          color={pressedIcons.Cart ? "#ffffff" : "black"}
+          color={cartScreen ? "#ffffff" : "black"}
         />
         <View style={styles.notificationContainer}>
           <Text style={styles.Cart}>{cartSize}</Text>
         </View>
-        {renderText("Cart")}
+        {  cartScreen && <Text style={styles.iconText}>Cart</Text>}
+
       </TouchableOpacity>
     </View>
   );
 };
-
 
 const styles = StyleSheet.create({
   footerContainer: {
@@ -208,5 +218,3 @@ const styles = StyleSheet.create({
 });
 
 export default Footer;
-
-// routing is correct but pressedIcons is not work
