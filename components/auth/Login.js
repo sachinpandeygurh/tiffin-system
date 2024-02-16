@@ -61,7 +61,7 @@ const Login = () => {
       <Text style={styles.title}>Login</Text>
 
       <TextInput
-        value={email}
+        value={email.toLowerCase()}
         onChangeText={(text) => setEmail(text)}
         placeholder="Enter Your Email"
         style={styles.input}

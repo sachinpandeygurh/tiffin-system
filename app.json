@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "manvika-Tiffins-Services",
-    "slug": "manasvi-tiffin-system",
+    "slug": "manvika-tiffin-system",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -22,9 +22,9 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#000000"
       },
-      "package": "manasvi.dmart"
+      "package": "com.manasvigroup.manvikatiffinsystem"
     },
-    "scheme": "employee-yt",
+    "scheme": "manvika-tiffin-system",
     "web": {
       "favicon": "./assets/favicon.png"
     },
@@ -36,7 +36,7 @@
         "origin": false
       },
       "eas": {
-        "projectId": "8ca8eb1b-4799-417f-b743-314a3554fdfe"
+        "projectId": "d2ada657-a3d3-4484-a917-24ca2c1adc59"
       }
     },
     "owner": "manasvigroup"
