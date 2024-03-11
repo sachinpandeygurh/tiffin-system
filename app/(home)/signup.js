@@ -7,7 +7,7 @@ import Footer from '../../components/Footer';
 import Header from '../../components/Header';
 import Signup from '../../components/auth/Signup';
 
-export default function signup() {
+export default function SignupScreen() {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <LinearGradient colors={["#7F7FD5", "#E9E4F0"]} style={{ flex: 1 }}>
@@ -16,7 +16,7 @@ export default function signup() {
             <Image style={styles.logo} source={require("../../img/c_logo.png")} />
           </View>
 
-          <ScrollView style={{ zIndex: 1, marginVertical: 80 }}>
+          <ScrollView style={{ zIndex: 1, marginVertical: 8 }}>
             <Signup/>
             {/* <CheckData/> */}
           </ScrollView>
@@ -35,12 +35,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   logoContainer: {
-    backgroundColor: "black",
+
     borderRadius: 100,
     alignItems: "center",
     justifyContent: "center",
-    width: 100,
-    height: 100,
+ 
     marginTop: 40,
   },
   logo: {

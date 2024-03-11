@@ -127,7 +127,6 @@ const Cart = () => {
                 <View style={styles.detailRow}>
                   <Text style={styles.Price}>&#x20B9; {p.productPrice * p.quantity}</Text>
                 </View>
-
                 <View style={styles.detailRow}>
                   <Pressable
                     style={{
@@ -179,9 +178,9 @@ const Cart = () => {
                 style={{
                   padding: 10,
                   backgroundColor: "white",
-                  borderWidth: 0.5,
+                  borderWidth: 1.5,
                   borderColor: "blue",
-                  borderRadius: 5,
+                  borderRadius: 8,
                   width: "80%",
                   marginHorizontal: "10%",
                   marginBottom: 20,

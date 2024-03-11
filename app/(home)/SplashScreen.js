@@ -1,9 +1,11 @@
 import React, { useEffect } from "react";
 import { StyleSheet, View, Pressable, Text, Animated } from "react-native";
 import { useRouter } from "expo-router";
+import { useNavigation } from "@react-navigation/native";
+
 
 export default function SplashScreen({ navigation }) {
-  const router = useRouter();
+  const router = useNavigation();
 
   const fadeAnim = new Animated.Value(0);
 

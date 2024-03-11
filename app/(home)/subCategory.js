@@ -15,7 +15,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRoute } from "@react-navigation/native";
 
 
-const subCategory = () => {
+const SubCategory = () => {
   const [products, setProducts] = useState([]);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
@@ -443,4 +443,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default subCategory;
+export default SubCategory;

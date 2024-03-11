@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Text, StyleSheet, View, TouchableOpacity } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useNavigation } from "expo-router";
+// import { useNavigation } from "expo-router";
 import {
   AntDesign,
   Feather,
@@ -9,10 +9,12 @@ import {
   FontAwesome5,
 } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
+import { useNavigation } from "@react-navigation/native";
+
 
 
 const Footer = () => {
-  const navigation = useRouter();
+  const navigation = useNavigation();
   const [auth, setAuth] = useState(null);
   const [cartArray, setCartArray] = useState([]);
   const [cartSize, setCartSize] = useState(0);
@@ -54,12 +56,15 @@ const Footer = () => {
   };
 
   useEffect(() => {
-  auth===null&& retrieveData();
-  retrieveCart();
+    retrieveData();
+    retrieveCart();
   }, [auth, cartSize]);
 
-  const handleHome = () => {
-    navigation.push("/(home)");
+
+
+  const handleHome = (e) => {
+    
+    navigation.navigate("Index");
     setHomeScreen(true);
     setNotificationsScreen(false);
     setAccountScreen(false);
@@ -71,7 +76,7 @@ const Footer = () => {
     setNotificationsScreen(true);
     setAccountScreen(false);
     setCartScreen(false);
-    navigation.push("notifications");
+    navigation.navigate("notifications");
 
   };
 
@@ -80,15 +85,18 @@ const Footer = () => {
     setNotificationsScreen(false);
     setAccountScreen(true);
     setCartScreen(false);
-    navigation.push("account");
+    navigation.navigate("account");
   };
 
   const handleCart = () => {
-    navigation.push("cart");
+    setCartScreen(true) 
+      navigation.navigate("cart");
     setHomeScreen(false);
     setNotificationsScreen(false);
     setAccountScreen(false);
-    setCartScreen(true);
+
+
+
   };
 
   return (
@@ -102,7 +110,7 @@ const Footer = () => {
           size={24}
           color={homeScreen ? "#ffffff" : "black"}
         />
-        {  homeScreen && <Text style={styles.iconText}>Home</Text>}
+        {homeScreen && <Text style={styles.iconText}>Home</Text>}
       </TouchableOpacity>
       <TouchableOpacity
         onPress={handleNotifications}
@@ -120,7 +128,7 @@ const Footer = () => {
         <View style={styles.notificationContainer}>
           <Text style={styles.notificationCount}>01</Text>
         </View>
-        {  notificationsScreen && <Text style={styles.iconText}>Notifications</Text>}
+        {notificationsScreen && <Text style={styles.iconText}>Notifications</Text>}
 
       </TouchableOpacity>
 
@@ -135,7 +143,7 @@ const Footer = () => {
           size={24}
           color={accountScreen ? "#ffffff" : "black"}
         />
-              {  accountScreen && <Text style={styles.iconText}>Account</Text>}
+        {accountScreen && <Text style={styles.iconText}>Account</Text>}
 
       </TouchableOpacity>
       <TouchableOpacity
@@ -150,7 +158,7 @@ const Footer = () => {
         <View style={styles.notificationContainer}>
           <Text style={styles.Cart}>{cartSize}</Text>
         </View>
-        {  cartScreen && <Text style={styles.iconText}>Cart</Text>}
+        {cartScreen && <Text style={styles.iconText}>Cart</Text>}
 
       </TouchableOpacity>
     </View>
@@ -182,7 +190,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#D8A144",
     flex: 1,
     padding: 15,
-    borderRadius: 15,
+    borderRadius: 8,
   },
   notificationContainer: {
     position: "relative",

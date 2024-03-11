@@ -17,7 +17,7 @@ const Signup = () => {
 
   const handleSubmit = async () => {
     try {
-      const res = await axios.post('ttps://dptf.onrender.com/api/v1/auth/register', {
+      const res = await axios.post('https://dptf.onrender.com/api/v1/auth/register', {
         name,
         email,
         password,
@@ -41,7 +41,6 @@ const Signup = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>REGISTER FORM</Text>
 
       <TextInput
         value={name}
@@ -91,7 +90,7 @@ const Signup = () => {
         <Text style={styles.buttonText}>REGISTER</Text>
       </TouchableOpacity>
 
-       <Text>
+       <Text style={{marginTop:20}}>
         Existing User?{' '}
         <Text
           style={styles.linkText}
@@ -101,44 +100,50 @@ const Signup = () => {
         </Text>
       </Text>
 
-      <Text>
-        <Text style={styles.linkText} onPress={() => Linking.openURL('https://dmart.onrender.com/policy')}>
-          Terms of Use
-        </Text>{' '}
-        and{' '}
-        <Text style={styles.linkText} onPress={() => Linking.openURL('https://dmart.onrender.com/policy')}>
-          Privacy Policy
-        </Text>
-        .
-      </Text>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    // marginTop:100,
+      flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
     padding: 20,
+    minWidth:300
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 20,
   },
   input: {
+    height: 35,
     borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 8,
     padding: 10,
     marginBottom: 20,
-    width: '100%',
+    width: "100%",
   },
   button: {
     backgroundColor: '#ffa502',
-    borderRadius: 80,
-    padding: 10,
-    width: '100%',
-    alignItems: 'center',
+    borderRadius: 8,
+    padding: 15,
+    width: "100%",
+    alignItems: "center",
+  },
+  buttonText: {
+    color: 'black',
+    fontWeight: 'bold',
+    // fontSize: 50, // Uncomment if you want to increase the font size
+  },
+  linkText: {
+    textDecorationLine: 'underline',
+    color: 'blue',
+    letterSpacing: 1, // There's a typo here. It should be 'letterSpacing', not 'tEXTspace'
+    //   paddingVertical: 10,
   },
   buttonText: {
     color: '#000',

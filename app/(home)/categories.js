@@ -4,7 +4,7 @@ import Category from '../../components/Categoury'
 import Footer from '../../components/Footer'
 import Products from '../../components/Products'
 
-export default function categories() {
+export default function Categories() {
   return (
     <SafeAreaView style={{backgroundColor:"#fafafa", flex:1 }}>
      <ScrollView style={{ flex:1 }}>

@@ -11,7 +11,7 @@ import {
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Ionicons ,AntDesign } from "@expo/vector-icons";
+import { Ionicons, AntDesign } from "@expo/vector-icons";
 import Loding from "./loding";
 
 
@@ -20,8 +20,6 @@ const Products = () => {
   const [loading, setLoading] = useState(false);
   const [cartAddedMap, setCartAddedMap] = useState({});
   const [isFilterModalVisible, setFilterModalVisible] = useState(false);
-  const [morning, setMorning] = useState(false);
-  const [evening, setEvening] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [selectedProductQuantity, setSelectedProductQuantity] = useState(1);
   const [productScheduleMap, setProductScheduleMap] = useState({});
@@ -54,7 +52,7 @@ const Products = () => {
       if (!cartString) {
         return;
       }
-
+  
       let cart = JSON.parse(cartString);
       const updatedCart = cart.map((product) => {
         if (product.productId === productId) {
@@ -62,21 +60,23 @@ const Products = () => {
         }
         return product;
       });
-
+  
       await AsyncStorage.setItem("@cart", JSON.stringify(updatedCart));
-
+  
       console.log(
         `Quantity for product with productId ${productId} updated successfully!`
       );
-
-      // Update the quantity state
-      setQuantity(newQuantity);
-
+  
+      // Update the selected product quantity state
+      setSelectedProductQuantity(newQuantity);
+  
       _retrieveData();
     } catch (error) {
       console.error("Error updating quantity:", error);
     }
   };
+  
+
 
   const handleProductScheduleChange = (productId, newSchedule) => {
     // Implement the logic for handling product schedule change
@@ -87,53 +87,53 @@ const Products = () => {
       [productId]: newSchedule,
     }));
   };
-  
- 
-const handleAddCart = async (
-  productId,
-  productName,
-  productPrice,
-  productDescription,
-  quantity,
-  schedule
-) => {
-  if (cartAddedMap[productId]) {
-    return;
-  }
 
-  try {
-    const cartString = await AsyncStorage.getItem("@cart");
-    const cart = cartString ? JSON.parse(cartString) : [];
-    const selectedProduct = {
-      productId,
-      productName,
-      productPrice,
-      productDescription,
-      quantity,
-      schedule,
-    };
 
-    // Set the corresponding schedule values based on the selected schedule
-    const updatedCart = [...cart, selectedProduct];
-    await AsyncStorage.setItem("@cart", JSON.stringify(updatedCart));
+  const handleAddCart = async (
+    productId,
+    productName,
+    productPrice,
+    productDescription,
+    quantity,
+    schedule
+  ) => {
+    if (cartAddedMap[productId]) {
+      return;
+    }
 
-    console.log(`${productName} added to cart successfully!`);
+    try {
+      const cartString = await AsyncStorage.getItem("@cart");
+      const cart = cartString ? JSON.parse(cartString) : [];
+      const selectedProduct = {
+        productId,
+        productName,
+        productPrice,
+        productDescription,
+        quantity,
+        schedule,
+      };
 
-    setCartAddedMap((prevMap) => ({
-      ...prevMap,
-      [productId]: true,
-    }));
+      // Set the corresponding schedule values based on the selected schedule
+      const updatedCart = [...cart, selectedProduct];
+      await AsyncStorage.setItem("@cart", JSON.stringify(updatedCart));
 
-    // Update the product schedule state
-    setProductScheduleMap((prevMap) => ({
-      ...prevMap,
-      [productId]: schedule,
+      console.log(`${productName} added to cart successfully!`);
 
-    }));
-  } catch (error) {
-    console.error("Error adding item to cart:", error);
-  }
-};
+      setCartAddedMap((prevMap) => ({
+        ...prevMap,
+        [productId]: true,
+      }));
+
+      // Update the product schedule state
+      setProductScheduleMap((prevMap) => ({
+        ...prevMap,
+        [productId]: schedule,
+
+      }));
+    } catch (error) {
+      console.error("Error adding item to cart:", error);
+    }
+  };
 
 
   const handleRemove = async (productId) => {
@@ -230,11 +230,11 @@ const handleAddCart = async (
               justifyContent: "space-around",
             }}
           >
-            {products&&products.length>0 ? (products?.map(
+            {products && products.length > 0 ? (products?.map(
               (
                 p // quantity is not aviable in products map
               ) => (
-                <TouchableOpacity key={p._id} style={styles.productContainer}>
+                <View key={p._id} style={styles.productContainer}>
                   <View style={styles.imageContainer}>
                     <Image
                       source={{
@@ -371,18 +371,18 @@ const handleAddCart = async (
                     onPress={() =>
                       cartAddedMap[p._id]
                         ? handleRemove(p._id)
-                        :handleAddCart(
+                        : handleAddCart(
                           p._id,
                           p.name,
-                          productScheduleMap[p._id]?.morning &&  productScheduleMap[p._id]?.evening ? p.price2 : p.price1,
+                          productScheduleMap[p._id]?.morning && productScheduleMap[p._id]?.evening ? p.price2 : p.price1,
                           p.description,
-                          quantity,
+                          1,
                           productScheduleMap[p._id] || {
                             morning: false,
                             evening: false,
                           }
                         )
-                        
+
                     }
                     disabled={cartAddedMap[p._id]}
                   >
@@ -402,30 +402,29 @@ const handleAddCart = async (
                               justifyContent: "space-between",
                             }}
                           >
-                            <Pressable
+                            {/* <Pressable
                               style={styles.quantityButton}
                               onPress={() => {
-                                handleQuantityChange(p._id, quantity - 1);
-                                console.log(quantity - 1);
+                                handleQuantityChange(p._id, selectedProductQuantity - 1);
+                                console.log(selectedProductQuantity - 1);
                               }}
-                              disabled={quantity === 1}
+                              disabled={selectedProductQuantity === 1}
                             >
                               <Text style={styles.quantityButtonText}>-</Text>
                             </Pressable>
                             <View style={styles.quantityparent}>
-                              <Text style={styles.quantity}>
-                                {quantity}
-                              </Text>
+                              <Text style={styles.quantity}>{selectedProductQuantity}</Text>
                             </View>
                             <Pressable
                               style={styles.quantityButton}
                               onPress={() => {
-                                handleQuantityChange(p._id, quantity + 1);
-                                console.log(quantity + 1);
+                                handleQuantityChange(p._id, selectedProductQuantity + 1);
+                                console.log(selectedProductQuantity + 1);
                               }}
                             >
                               <Text style={styles.quantityButtonText}>+</Text>
-                            </Pressable>
+                            </Pressable> */}
+
                           </View>
                           <Pressable
                             style={styles.removeButton}
@@ -439,9 +438,9 @@ const handleAddCart = async (
                       )}
                     </Text>
                   </Pressable>
-                </TouchableOpacity>
+                </View>
               )
-            )):(<Loding/>)}
+            )) : (<Loding />)}
           </View>
         </View>
       </ScrollView>
@@ -451,7 +450,7 @@ const handleAddCart = async (
 
 const styles = StyleSheet.create({
   productContainer: {
-    width: 180,
+    maxWidth: 180,
     margin: 8,
     borderRadius: 10,
     shadowColor: "white",
@@ -494,6 +493,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingBottom: 5,
     marginBottom: 5,
+    flexWrap: "wrap"
   },
   detailValue: {
     color: "#000000",
@@ -524,11 +524,11 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   removeButton: {
-   alignItems:"center",
-   justifyContent:"center",
-   flexDirection:"row",
-   display:"flex",
-   padding:10
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row",
+    display: "flex",
+    padding: 10
   },
   removeButtonText: {
     color: "white",

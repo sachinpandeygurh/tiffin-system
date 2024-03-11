@@ -14,7 +14,7 @@ import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import LocationComponent from "../../components/Location";
 import Products from "../../components/Products";
-const index = () => {
+const Index = () => {
   const router = useRouter();
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -31,7 +31,7 @@ const index = () => {
   );
 };
 
-export default index;
+export default Index;
 
 const styles = StyleSheet.create({
   container: {

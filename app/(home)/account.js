@@ -23,7 +23,8 @@ class Account extends React.Component {
               marginHorizontal:"5%"
             }}
           >
-            <PrintOrderDetails/> 
+            {/* <PrintOrderDetails/>  */}
+            <Text></Text>
             <Logout />
           </View>
           <Dashboard />

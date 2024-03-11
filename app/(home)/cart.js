@@ -6,7 +6,7 @@ import CheckData from '../../components/auth/CheckData'
 import { LinearGradient } from "expo-linear-gradient";
 import Footer from '../../components/Footer';
 
-const cart = () => {
+const CartScreen = () => {
 
 
   return (
@@ -51,4 +51,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default cart;
+export default CartScreen;

@@ -3,9 +3,11 @@ import { View, Text, TouchableOpacity, StyleSheet, Pressable } from 'react-nativ
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from "expo-router";
 import Footer from '../../components/Footer';
+import { useNavigation } from "@react-navigation/native";
+
 
 const Notifications = () => {
-  const router = useRouter();
+  const router = useNavigation();
   const offers = [
     'New Offer! Get 20% off on selected items.',
     'Your order has been shipped.',
@@ -21,7 +23,7 @@ const Notifications = () => {
       </View>
       <View style={styles.notificationList}>
         {offers.map((offer, index) => (
-          <Pressable  onPress={() => router.push('(home)')} key={index} style={styles.notificationItem}>
+          <Pressable  onPress={() => router.push('')} key={index} style={styles.notificationItem}>
           <Text style={{color: "white"}}> {offer}
             </Text>  
             {/* <Text >Get</Text> */}

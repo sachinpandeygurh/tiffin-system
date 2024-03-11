@@ -136,7 +136,7 @@ const LocationComponent = ({ navigation }) => {
       <View>
         <Pressable
         onPress={handleLocationModal}>
-         <Text  style={{ fontSize: 18, fontWeight: "600" }}>Home  <AntDesign name="caretdown" size={12} color="black" /> </Text>
+         <Text  style={{ fontSize: 18, fontWeight: "600" }}>Home   </Text>
         </Pressable>
         <Text>
           {locationServicesEnabled ? (

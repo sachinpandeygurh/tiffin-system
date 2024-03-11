@@ -3,9 +3,8 @@ import React, { useState } from 'react'
 import Login from '../../components/auth/Login'
 import CheckData from '../../components/auth/CheckData'
 import { LinearGradient } from "expo-linear-gradient";
-import Footer from '../../components/Footer';
 
-export default function login() {
+export default function LoginScreen() {
  
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -15,7 +14,7 @@ export default function login() {
             <Image style={styles.logo} source={require("../../img/c_logo.png")} />
           </View>
 
-          <ScrollView style={{ zIndex: 1, marginVertical: 80 }}>
+          <ScrollView style={{ zIndex: 1, marginVertical: 8 }}>
             <Login />
             {/* <CheckData/> */}
           </ScrollView>
@@ -34,12 +33,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   logoContainer: {
-    backgroundColor: "black",
+   
     borderRadius: 100,
     alignItems: "center",
     justifyContent: "center",
-    width: 100,
-    height: 100,
+  
     marginTop: 40,
   },
   logo: {

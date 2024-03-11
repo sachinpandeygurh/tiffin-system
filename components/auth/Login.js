@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { View, Text, TextInput, TouchableOpacity, Alert, StyleSheet } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, Alert, StyleSheet, Linking, Pressable } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
+import { Router } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigation = useNavigation();
+  const [flag , setFlag] = useState(false)
 
   useEffect(() => {
     retrieveData();
@@ -20,7 +22,7 @@ const Login = () => {
         const authData = JSON.parse(value);
         
     if(authData._id){
-      navigation.navigate("index");
+      navigation.navigate("Index");
       alert('user already login ')
     }
       }
@@ -32,6 +34,7 @@ const Login = () => {
 
 
   const handleSubmit = async () => {
+   setFlag(true)
     try {
       const res = await axios.post("https://dptf.onrender.com/api/v1/auth/login", {
         email,
@@ -44,21 +47,22 @@ const Login = () => {
         console.log("Data stored successfully!");
 
         Alert.alert("login", "successfully!");
-
-        navigation.navigate("index");
+        navigation.navigate("Index");
         console.log("Navigation successful!");
       } else {
         Alert.alert("Error", res.data.message);
+   setFlag(false)
       }
     } catch (error) {
       Alert.alert("Error", "Something went wrong");
       console.error(error);
+         setFlag(false)
     }
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Login</Text>
+    {flag&&<Text style={{marginVertical:20}}>Loading...</Text>}
 
       <TextInput
         value={email.toLowerCase()}
@@ -73,32 +77,26 @@ const Login = () => {
         secureTextEntry
         style={styles.input}
       />
-
       <TouchableOpacity onPress={handleSubmit} style={styles.button}>
         <Text style={styles.buttonText}>LOGIN</Text>
       </TouchableOpacity>
-
       <View style={{ flexDirection: "column", alignContent: "center", justifyContent: "space-between", width: "90%", marginTop: 10 }} >
-        <TouchableOpacity style={{ flexDirection: "row", alignContent: "center", justifyContent: "center" }} onPress={() => navigation.navigate('signup')}>
+        <Pressable style={{ flexDirection: "row", alignContent: "center", justifyContent: "center" }} onPress={() => navigation.navigate('signup')}>
           <Text style={{paddingRight:20}}>New Customer? </Text>
           <Text style={styles.linkText}>Sign Up</Text>
-        </TouchableOpacity>
+        </Pressable>
         <Text></Text>
-        <TouchableOpacity onPress={() => navigation.navigate("ForgotPassword")}>
-          <Text style={styles.forgotPassword}>Forgot Password</Text>
-        </TouchableOpacity>
+        <View >
+          <Text onPress={() => Linking.openURL('https://dptf.onrender.com/fogetpassword')} style={styles.forgotPassword}>Forgot Password</Text>
+        </View>
       </View>
-
-      <Text style={styles.policyText}>
-        <TouchableOpacity style={styles.policytxt} onPress={() => navigation.navigate("Policy")}>
-          <Text style={styles.linkText}>Terms of Use</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.policytxt} onPress={() => navigation.navigate("Policy")}>
-          <Text style={styles.linkText}>Privacy Policy</Text>
-        </TouchableOpacity>
-
-      </Text>
+      <View style={styles.policyText}>
+        <View style={styles.policytxt}>
+        <Text style={styles.linkText} onPress={() => Linking.openURL('https://dmart.onrender.com/policy')}>
+          Terms of Use
+        </Text>
+        </View>
+      </View>
     </View>
   );
 };
@@ -106,10 +104,11 @@ const Login = () => {
 const styles = StyleSheet.create({
   container: {
     // marginTop:100,
-    //   flex: 1,
+      flex: 1,
     justifyContent: "center",
     alignItems: "center",
     padding: 20,
+    minWidth:300
   },
   title: {
     fontSize: 24,
@@ -127,7 +126,7 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: '#ffa502',
-    borderRadius: 80,
+    borderRadius: 8,
     padding: 15,
     width: "100%",
     alignItems: "center",
